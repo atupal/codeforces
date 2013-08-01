@@ -36,6 +36,13 @@ if A[0]:
     cnt += 1
     ans.add(0)
 
+if not cnt:
+    print 1
+    for i in xrange(1, 101, 1):
+        if A[i]:
+            print i
+            exit()
+
 print cnt
 for i in ans:
     print i ,
