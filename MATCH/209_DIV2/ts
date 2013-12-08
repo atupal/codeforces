@@ -1,0 +1,6 @@
+#!/bin/bash
+echo 98304 2
+for x in $(seq 1 98304)
+do
+  echo -n "0 "
+done
