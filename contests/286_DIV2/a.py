@@ -3,6 +3,8 @@
 
 s = raw_input()
 
+# column是w位的字符串
+
 
 for i in xrange(len(s)+1):
   for j in xrange(26):
