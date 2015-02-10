@@ -20,7 +20,7 @@ for x in xrange(1, 9):
   for a in itertools.permutations(xrange(1,x)):
     if cl(a) == c:
       cnt += 1
-      #print a, '->', cl(a)
+      print a, '->', cl(a)
   print cnt, '*' * 50
 
 exit(0)
