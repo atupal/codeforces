@@ -14,7 +14,7 @@ for i in xrange(n):
 x.sort()
 
 
-res = 0.
+ans = 0.
 
 for ans in xrange (1, 10001):
 
