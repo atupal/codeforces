@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#A 2j -*- coding: utf-8 -*-
 
 import numpy as np
 import copy
@@ -22,7 +22,7 @@ for i in xrange(maxn):
 A[maxn][maxn-1] = 1
 A[maxn][maxn] = 1
 
-A, ret, base = np.mat(A, dtype=np.uint64), np.mat(A, dtype=np.uint64), np.mat(A, dtype=np.uint64)
+A, ret, base = np.mat(A, dtype=np.object), np.mat(A, dtype=np.object), np.mat(A, dtype=np.object)
 
 #ret = copy.deepcopy(A)
 #base = copy.deepcopy(A)
@@ -39,7 +39,7 @@ def mul(a, b):
 while x:
   if x&1:
     #ret  = mul(ret, base)
-    ret *= base  # TODO wil overflow when the number is huge.
+    ret *= base  # TODO wil overflow when the number is huge. use object can solve this but tlt...
     ret %= MOD
   #base = mul(base, base)
   base *= base
@@ -47,5 +47,5 @@ while x:
   x >>= 1
 
 #ans = mul(X, ret)
-ans = np.asarray(X*ret, dtype=np.uint64)
+ans = np.asarray(X*ret, dtype=np.object)
 print int( ans[0][-2]%MOD )
