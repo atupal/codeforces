@@ -1,84 +1,89 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <vector>
+#include <queue>
+
+using namespace std;
 
 const int maxn = 2001;
 int n, m;
 char map[maxn][maxn];
-char out[maxn][maxn];
 int vis[maxn][maxn];
-int ans = 0;
 
-void dfs(int x, int y) {
+int get(int x, int y) {
+  if (map[x][y] != '.') return 0;
+  int ret = 0;
+  if (x+1<n && map[x+1][y] == '.') ret ++;
+  if (y+1<m && map[x][y+1] == '.') ret ++;
+  if (x-1>=0&& map[x-1][y] == '.') ret ++;
+  if (y-1>=0&& map[x][y-1] == '.') ret ++;
 
-  if (y==m) {
-    x ++;
-    y = 0;
-  }
-
-  if (x==n) {
-
-    for (int i = n-1; i < n; ++ i) {
-      for (int j = 0; j < m; ++ j) {
-        if (map[i][j] == '.') {
-          return;
-        }
-      }
-    }
-
-    if (ans) {
-      printf("Not unique\n");
-      exit(0);
-    }
-    ans = 1;
-    memcpy(out, map, sizeof(map));
-    return;
-  }
-  char cur='*', left='*', up='*', left_down='*', down='*', right='*';
-  if (map[x][y] == '.') cur = '.';
-  if (y-1>=0 && map[x][y-1]=='.') left = '.';
-  if (x-1>=0 && map[x-1][y]=='.') up = '.';
-  if (x+1<n && y-1>=0 && map[x+1][y-1]=='.') left_down='.';
-  if (x+1<n && map[x+1][y] == '.') down='.';
-  if (y+1<m && map[x][y+1] == '.') right='.';
-
-
-  if ( cur == '.' ) {
-
-    if (up=='.' && (left != '.' || left_down == '.')) {
-      map[x-1][y] = '^';
-      map[x][y] = 'v';
-      dfs(x, y+1);
-      map[x-1][y] = '.';
-      map[x][y] = '.';
-    } else if (y-1>=0 && map[x][y-1]=='.') {
-      map[x][y-1] = '<';
-      map[x][y] = '>';
-      dfs(x, y+1);
-      map[x][y-1] = '.';
-      map[x][y] = '.';
-    }
-  }
-
-  if (up=='.' || (left=='.' && left_down != '.') )  return;
-
-  if (x-2>=0 && map[x-2][y]=='.') return;
-
-  if (cur != '.' || down=='.' || right=='.') {
-    dfs(x, y+1);
-  }
-
+  return ret;
 }
 
 void solve() {
-  dfs(0, 0);
-  if (!ans) {
-    printf("Not unique\n");
-    return;
-  }
+  queue <pair<int, int> > q;
+  memset(vis, 0, sizeof(vis));
   for (int i = 0; i < n; ++ i) {
-    printf("%s\n", out[i]);
+    for (int j = 0; j < m; ++ j) {
+      if (get(i, j) == 1) {
+        q.push(make_pair(i, j));
+      }
+    }
   }
+
+  while (!q.empty()) {
+    __typeof(q.front()) it = q.front();
+    q.pop();
+    int x = it.first;
+    int y = it.second;
+    if (!vis[x][y]) {
+      vis[x][y] = 1;
+      if (x+1 < n && map[x+1][y] == '.') {
+        map[x][y]   = '^';
+        map[x+1][y] = 'v';
+        vis[x+1][y] = 1;
+      } else if (y+1 < m && map[x][y+1] == '.') {
+        map[x][y]   = '<';
+        map[x][y+1] = '>';
+        vis[x][y+1] = 1;
+      } else if (x-1 >= 0 && map[x-1][y] == '.') {
+        map[x-1][y] = '^';
+        map[x][y] = 'v';
+        vis[x-1][y] = 1;
+      } else if (y-1 >= 0 && map[x][y-1] == '.') {
+        map[x][y-1] = '<';
+        map[x][y] = '>';
+        vis[x][y-1] = 1;
+      }
+
+      for (int i = x-2; i <= x+2; ++ i) {
+        for (int j = y-2; j <= y+2; ++ j) {
+          if (i >= 0 && i < n && j >= 0 && j < m && !vis[i][j] && get(i, j) == 1) {
+            q.push(make_pair(i, j));
+          }
+        }
+      }
+
+
+    }
+
+  }
+
+  for (int i = 0; i < n; ++ i) {
+    for (int j = 0; j < m; ++ j) {
+      if (map[i][j] == '.') {
+        printf("Not unique\n");
+        return;
+      }
+    }
+  }
+
+  for (int i = 0; i < n; ++ i) {
+    printf("%s\n", map[i]);
+  }
+
 }
 
 int main() {
@@ -90,4 +95,3 @@ int main() {
 
   return 0;
 }
-
