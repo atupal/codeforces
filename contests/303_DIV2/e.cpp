@@ -49,12 +49,16 @@ void dijkstra() {
             idx[it->v] = it->idx;
           }
         } else {
+
           w[it->v] = it->w;
           idx[it->v] = it->idx;
+
+          // no outside as equal should not push !, otherwise memory limit exceeded
+          d[it->v] = d[v] + it->w;
+          que.push(P(d[it->v],it->v));
+
         }
 
-        d[it->v] = d[v] + it->w;
-        que.push(P(d[it->v],it->v));
       }
     }
   }
