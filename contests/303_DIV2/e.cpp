@@ -39,6 +39,7 @@ void dijkstra() {
       if(d[it->first] > d[v] + it->second) {
         d[it->first] = d[v] + it->second;
         que.push(P(d[it->first],it->first));
+        ans += it->second;
       }
     }
   }
@@ -72,11 +73,13 @@ void dfs(int u, ll l) {
 }
 
 void solve() {
-  dijkstra();
   ans = 0;
+  dijkstra();
+  /*
   memset(vis, 0, sizeof(vis));
   vis[root] = 1;
   dfs(root, 0);
+  */
   cout << ans << endl;
   for (auto it=out.begin(); it!=out.end(); ++ it) {
     cout << *it << " ";
